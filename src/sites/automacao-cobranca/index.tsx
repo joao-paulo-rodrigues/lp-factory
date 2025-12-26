@@ -6,7 +6,6 @@ import {
   CheckCircle,
   ArrowRight,
   Zap,
-  Clock,
   Shield,
   Star,
   ChevronDown,
