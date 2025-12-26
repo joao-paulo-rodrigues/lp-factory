@@ -1,0 +1,37 @@
+services:
+  lp-factory:
+    build: .
+    container_name: lp-factory
+    restart: unless-stopped
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+
+      # ===========================================
+      # PREVIEW - lp.robotizese.com.br
+      # ===========================================
+      - "traefik.http.routers.lp-factory.rule=Host(`lp.robotizese.com.br`)"
+      - "traefik.http.routers.lp-factory.entrypoints=websecure"
+      - "traefik.http.routers.lp-factory.tls=true"
+      - "traefik.http.routers.lp-factory.tls.certresolver=letsencrypt"
+
+      # ===========================================
+      # PRODUÇÃO - Adicione domínios aqui
+      # ===========================================
+
+      # CarrinhoAbandonado
+      - "traefik.http.routers.lp-carrinho.rule=Host(`carrinhoabandonado.com.br`) || Host(`www.carrinhoabandonado.com.br`)"
+      - "traefik.http.routers.lp-carrinho.entrypoints=websecure"
+      - "traefik.http.routers.lp-carrinho.tls=true"
+      - "traefik.http.routers.lp-carrinho.tls.certresolver=letsencrypt"
+
+      # ===========================================
+      # SERVICE
+      # ===========================================
+      - "traefik.http.services.lp-factory.loadbalancer.server.port=80"
+
+networks:
+  web:
+    external: true
